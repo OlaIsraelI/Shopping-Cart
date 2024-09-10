@@ -70,6 +70,7 @@ function renderCartItems (){
                   <i class="fas fa-minus-circle" value=${cartItem.id}></i>
                 </div>
                 <div>
+                  <i class="fa-solid fa-trash-can" value=${cartItem.id}></i>
                   <i class="fas fa-trash-alt" value=${cartItem.id}></i>
                   <i class="fas fa-heart ${cartItem.isFavourite ? 'heart' : ''}" value=${cartItem.id} 
                      style="color: ${cartItem.isFavourite ? 'red' : 'black'};"></i>
@@ -84,7 +85,8 @@ function renderCartItems (){
 
   const increaseItemBtn = document.getElementsByClassName("fa-plus-circle");
   const dereaseItemBtn = document.getElementsByClassName("fa-minus-circle");
-  const trashItemBtn = document.getElementsByClassName("fa-trash-alt");
+  const trashItemBtn = document.getElementsByClassName("fa-trash-can");
+  const deleteItemBtn = document.getElementsByClassName("fa-trash-alt");
   const heartItemBtn = document.getElementsByClassName("fa-heart");
 
 
@@ -100,6 +102,11 @@ function renderCartItems (){
   for (let trashItem of trashItemBtn){
     trashItem.addEventListener("click", clearCartItemPrice);
   } 
+
+
+  for (let deleteItem of deleteItemBtn){
+    deleteItem.addEventListener("click", deleteCard);
+  }
 
   for (let heartItem of heartItemBtn) {
     heartItem.addEventListener("click", toggleFavourite);
@@ -192,6 +199,21 @@ function toggleFavourite(event) {
     cartItems[foundProductIndex].isFavourite = !cartItems[foundProductIndex].isFavourite;
   }
 
-  renderCartItems();
+  return renderCartItems();
 }
+
+function deleteCard(event){
+  const productId = event.target.getAttribute("value");
+
+  const foundProductIndex = cartItems.findIndex(item => item.id === productId);
+
+  if (foundProductIndex < 0){
+    return
+  }
+
+  cartItems.splice(foundProductIndex, 1)
+
+  return renderCartItems();
+}
+
 
